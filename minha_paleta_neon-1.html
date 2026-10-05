@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎨 Minha Paleta Neon</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f7f7f7;color:#151515}
+header{text-align:center;background:white;padding:28px 16px;box-shadow:0 2px 10px #ddd}
+h1{margin:0;font-size:34px}header p{margin:10px 0 0;color:#777}
+main{padding:25px 20px;max-width:1000px;margin:auto}h2{font-size:28px;margin:22px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{height:105px;border-radius:17px;background:var(--c);display:flex;align-items:flex-end;justify-content:center;padding:12px;font-weight:bold;cursor:pointer;transition:.15s;box-shadow:0 4px 12px #bbb}
+.card:hover{transform:translateY(-3px);box-shadow:0 0 18px var(--c)}
+.code{background:rgba(255,255,255,.9);padding:7px 11px;border-radius:9px}
+#msg{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:12px 18px;border-radius:30px;display:none}
+@media(max-width:650px){.grid{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+</style></head>
+<body>
+<header><h1>🎨 Minha Paleta Neon</h1><p>Cores neon • do claro ao escuro • toque para copiar</p></header>
+<main id="app"></main><div id="msg">Cor copiada! ✨</div>
+<script>
+const p={
+"Vermelhos":["#FF6B6B","#FF3B3B","#FF1744","#FF003C","#FF0055","#F50057","#E6003C","#C90032","#A80029","#7A001F"],
+"Laranjas":["#FFD1A3","#FFB347","#FF9500","#FF7A00","#FF5E00","#FF4D00","#FF3D00","#E83E00","#C93600","#9E2D00"],
+"Amarelos":["#FFFFB3","#FFF44F","#FFE600","#FFD500","#FFEA00","#F5D900","#E6C800","#C9B000","#A88F00","#806D00"],
+"Verdes":["#B6FF00","#7CFF00","#39FF14","#00FF66","#00FF85","#00FF00","#00E676","#00C853","#00A844","#007A32"],
+"Cianos":["#A7FFFF","#5FFFFF","#00FFFF","#00F5FF","#00E5FF","#00D9FF","#00C8FF","#00AEEF","#008FD1","#006A9E"],
+"Azuis":["#9EDBFF","#66C7FF","#00B7FF","#0099FF","#007BFF","#005CFF","#003CFF","#2939FF","#3020D0","#24168A"],
+"Roxos":["#E6B3FF","#D580FF","#C040FF","#B000FF","#9D00FF","#8A00FF","#7200FF","#5B00D6","#4500A8","#300078"],
+"Rosas":["#FFB6E6","#FF7AC8","#FF4DB8","#FF1493","#FF00A8","#FF0080","#F5009D","#D9008F","#B80078","#850058"]};
+for(const [nome,cores] of Object.entries(p)){
+ const s=document.createElement("section");s.innerHTML="<h2>"+nome+"</h2><div class='grid'></div>";
+ const g=s.querySelector(".grid");
+ cores.forEach(c=>{const d=document.createElement("div");d.className="card";d.style.setProperty("--c",c);d.innerHTML="<span class='code'>"+c+"</span>";d.onclick=()=>{navigator.clipboard?.writeText(c);msg.style.display="block";setTimeout(()=>msg.style.display="none",900)};g.appendChild(d)});
+ app.appendChild(s);
+}
+</script></body></html>
