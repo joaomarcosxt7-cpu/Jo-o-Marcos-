@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minha Paleta — Cores</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f7f7f7;color:#222}
+header{padding:28px 18px 20px;text-align:center;background:white;position:sticky;top:0;z-index:5;box-shadow:0 2px 12px #00000012}
+h1{margin:0;font-size:28px}
+.sub{margin:7px 0 0;color:#777;font-size:14px}
+.wrap{max-width:900px;margin:auto;padding:18px}
+.section{margin:22px 0 28px}
+.section h2{font-size:20px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.color{height:78px;border:0;border-radius:13px;cursor:pointer;box-shadow:0 2px 8px #00000012;position:relative;overflow:hidden}
+.color span{position:absolute;bottom:0;left:0;right:0;padding:7px 4px;background:#ffffffdd;font-size:11px;font-weight:bold}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#222;color:white;padding:12px 18px;border-radius:30px;opacity:0;transition:.25s;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:650px){.grid{grid-template-columns:repeat(4,1fr)}.color{height:70px}}
+@media(max-width:430px){.grid{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<header>
+<h1>🎨 Minha Paleta de Cores</h1>
+<p class="sub">Cores normais • do claro ao escuro • toque para copiar</p>
+</header>
+<main class="wrap" id="app"></main>
+<div class="toast" id="toast">Cor copiada!</div>
+<script>
+const groups = {
+"Vermelhos":["#FFF5F5","#FFE3E3","#FFC9C9","#FFAAAA","#FF8585","#FF5C5C","#F53D3D","#D92323","#B31313","#7F0808"],
+"Laranjas":["#FFF7ED","#FFE7CC","#FFD0A3","#FFB56B","#FF9638","#F77A18","#E85D04","#C44B00","#963700","#642300"],
+"Amarelos":["#FFFCE6","#FFF5B8","#FFEE80","#FFE54D","#FFD92F","#F5C400","#D9A900","#B88900","#8F6D00","#5F4800"],
+"Verdes":["#F1FFF4","#D9F7DE","#B8EBC0","#8DDA9B","#62C979","#39B85A","#209447","#147336","#0D5427","#073519"],
+"Cianos":["#EEFFFF","#D2FAFA","#A8F0F0","#76E2E2","#43D2D2","#18BDBD","#079999","#067777","#045656","#023737"],
+"Azuis":["#F0F7FF","#DCEEFF","#BDDFFF","#94C9FF","#65ADFF","#378FF5","#176DD1","#1052A2","#0A3972","#062448"],
+"Roxos":["#F8F2FF","#EEDFFF","#DDC4FF","#C6A0FF","#AB78FF","#8D50F5","#7135D1","#5424A5","#381873","#230E49"],
+"Rosas":["#FFF2F8","#FFDDED","#FFC3DD","#FFA1C8","#FF7EAF","#F45A92","#D93B73","#B5265A","#84183F","#540C29"],
+"Marrons":["#FFF8F2","#F3E1D0","#E4C5A7","#D2A27B","#BC8055","#A46138","#814726","#60311C","#402015","#27120C"],
+"Cinzas":["#FFFFFF","#F2F2F2","#DCDCDC","#C4C4C4","#AAAAAA","#8F8F8F","#737373","#575757","#3B3B3B","#202020"],
+"Neutros":["#FFFDF8","#F8F1E5","#EDE2D0","#DCCDB7","#C8B59A","#AD987B","#8F785E","#6E5943","#4C3B2B","#2E2117"]
+};
+const app=document.getElementById("app"), toast=document.getElementById("toast");
+for(const [name, colors] of Object.entries(groups)){
+  const sec=document.createElement("section"); sec.className="section";
+  sec.innerHTML=`<h2>${name}</h2><div class="grid"></div>`;
+  const grid=sec.querySelector(".grid");
+  colors.forEach(hex=>{
+    const b=document.createElement("button"); b.className="color"; b.style.background=hex; b.title=`Copiar ${hex}`;
+    b.innerHTML=`<span>${hex}</span>`;
+    b.onclick=async()=>{
+      try{await navigator.clipboard.writeText(hex)}catch(e){
+        const t=document.createElement("textarea");t.value=hex;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove();
+      }
+      toast.textContent=`${hex} copiado!`;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),1200);
+    };
+    grid.appendChild(b);
+  });
+  app.appendChild(sec);
+}
+</script>
+</body>
+</html>
